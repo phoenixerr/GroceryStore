@@ -1,0 +1,80 @@
+{% extends "user_base.html" %}
+{% block body %}
+
+<div class="row">
+    <!-- loop for products in specific category -->
+    {% for booking in bookings %}
+    <div class="col">
+        <div class="card h-100">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-3">
+                    <b>{{ booking["item_name"] }}</b>
+                </div>
+                <div class="col-2">
+                    {{ booking['quantity_of_item'] }} {{ product['unit'] }}
+                </div>
+                <div class="col-2">
+                    Rs. {{ booking["total_price"] }}
+                </div>
+                <div class="col-2">
+                    <a href="/bookings/buy/{{ booking['bookingid'] }}" class="btn btn-outline-dark btn-sm mx-2" type="submit">Buy</a>
+                </div>
+                <div class="col-2">
+                    <button class="btn btn-outline-dark btn-sm mx-2" type="button" data-bs-toggle="modal" data-bs-target="#{{ booking['bookingid'] }}AddToCartModal">Review</button>
+                </div>
+                <!-- Modal -->
+                <div class="modal fade" id="{{ booking['bookingid'] }}AddToCartModal">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5">Review: {{ product['pname'] }}</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form method = "POST", action = "/edit/bookings/{{ booking['bookingid'] }}">
+                                <div class="modal-body">
+                                    <div class="form-floating mb-3">
+                                        <input type="number" class="form-control" value='In Stock' id="Availability" readonly>
+                                        <label for="Availability">Availability</label>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input type="number" class="form-control" id="Quantity" value="{{ booking['quantity_of_item'] }}" name="Quantity" min="1" max="{{ booking['product_id']['quantity'] }}">
+                                        <label for="Quantity">Quantity</label>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input type="number" class="form-control" value="{{ booking['product_id']['rateperunit'] }}" id="Price" readonly>
+                                        <label for="Price">Price</label>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input type="number" name="Total" class="form-control" value="document.getElementById('Quantity')*{{ booking['product_id']['rateperunit'] }}" id="Total" readonly>
+                                        <label for="Total">Total</label>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Done</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-1">
+                    <a href="/delete/booking/{{ booking['bookingid'] }}" class="btn btn-outline-dark btn-sm mx-2" type="submit"><i class="fa-solid fa-trash-can"></i></a>
+                </div>
+            </div>
+        </div>
+
+{% endblock body %}
+
+<footer id="sticky-footer" class="flex-shrink-0 py-4 bg-dark text-white-50">
+    <div class="container">
+        <div class="row">
+            <div class="col-8"></div>
+                <small>Grand Total : {{ total }}</small>
+            </div>
+            <div class="col-4">
+                <a href="/bookings/buy_all" class="btn btn-outline-dark btn-sm mx-2" type="submit">Buy All</a>
+            </div>
+        </div>
+    </div>
+</footer>

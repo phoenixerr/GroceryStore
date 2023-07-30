@@ -1,0 +1,23 @@
+{% extends "user_base.html" %}
+{% block body %}
+
+<div class="row">
+    <!-- loop for products in specific category -->
+    {% for order in orders %}
+    <div class="col">
+        <div class="card h-100">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-6">
+                    <b>{{ order["product_name"] }}</b>
+                </div>
+                <div class="col-3">
+                    {{ order['quantity_of_product'] }} {{ order['productid']['unit'] }}
+                </div>
+                <div class="col-3">
+                    Rs. {{ order["total_price"] }}
+                </div>
+            </div>
+        </div>
+
+{% endblock body %}
