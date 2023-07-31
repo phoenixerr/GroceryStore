@@ -224,7 +224,6 @@ def edit_booking(booking_id):
 def delete_booking(booking_id):
     booking = Booking.query.get(booking_id)
     product = Product.query.get(booking.product_id)
-    product.quantity = product.quantity + booking.quantity_of_item
     db.session.delete(booking)
     db.session.commit()
     return redirect(url_for("views.user_dashboard"))
@@ -269,6 +268,7 @@ def buy_all():
 @login_required
 def user_bookings():
     bookings = Booking.query.filter_by(user_id=current_user.id).all()
+    products = Product.query.all()
     total = 0
     for booking in bookings:
         product = Product.query.get(booking.product_id)

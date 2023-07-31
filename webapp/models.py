@@ -34,12 +34,13 @@ class Product(db.Model):
     rateperunit = db.Column(db.Integer)
     quantity = db.Column(db.Integer)
     category_id = db.Column(db.Integer, db.ForeignKey("categories.cid", ondelete = "CASCADE"))
+    bookings = db.relationship("Booking", backref = "product", cascade = "all, delete", passive_deletes = True)
 
 class Booking(db.Model):
     bookingid = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     category_id = db.Column(db.Integer, db.ForeignKey('categories.cid'))
-    product_id = db.Column(db.Integer, db.ForeignKey('products.pid'))
+    product_id = db.Column(db.Integer, db.ForeignKey('products.pid', ondelete = "CASCADE"))
     category_name = db.Column(db.String(50))
     quantity_of_item = db.Column(db.Integer)
     total_price = db.Column(db.Integer)
