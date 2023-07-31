@@ -1,6 +1,66 @@
 {% extends "user_base.html" %}
 {% block body %}
 
+<div class="text-center my-4" >
+    <button class="btn btn-dark" style="margin-left: 5px" data-bs-toggle="modal" data-bs-target="#SearchCategoryModal">Search Category</button>
+    <!-- Modal -->
+    <div class="modal fade" id="SearchCategoryModal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Search Category</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method = "POST", action = "/search/category">
+                    <div class="modal-body">
+                        <div class="form-floating mb-3">
+                            <input name="category" type="search" class="form-control" id="category" list="search category" placeholder="For Eg.: Spices" required>
+                            <datalist id="search category">
+                                {% for category in categories %}
+                                <option value="{{ category['cname'] }}">
+                                {% endfor %}
+                            </datalist>
+                            <label for="category">Category Name</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-dark" style="margin-left: 5px" data-bs-toggle="modal" data-bs-target="#SearchProductModal">Search Product</button>
+    <!-- Modal -->
+    <div class="modal fade" id="SearchProductModal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Search Product</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method = "POST", action = "/search/product">
+                    <div class="modal-body">
+                        <div class="form-floating mb-3">
+                            <input name="product" type="search" class="form-control" id="product" list="search product" placeholder="For Eg.: Apple" required>
+                            <datalist id="search product">
+                                {% for product in products %}
+                                <option value="{{ product['pname'] }}">
+                                {% endfor %}
+                            </datalist>
+                            <label for="product">Product Name</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
     <!-- loop for category -->
     {% for category in categories %}

@@ -288,3 +288,21 @@ def user_orders():
     user_id=current_user.id
     orders = Order.query.filter_by(userid=user_id).all()
     return render_template("user_orders.html", orders=orders)
+
+@views.route("/search/category", methods=["POST"])
+@user_required
+@login_required
+def search_category():
+    cat_name = request.form.get("category")
+    category = Category.query.filter_by(cname=cat_name).first()
+    categories = [category]
+    products = Product.query.filter_by(category_id=category.cid).all()
+    return render_template("user_dashboard.html", user=current_user, categories = categories, products = products)
+
+@views.route("/search/product", methods=["POST"])
+@user_required
+@login_required
+def search_product():
+    item_name = request.form.get("product")
+    products = Product.query.filter_by(pname=item_name).all()
+    return render_template("search_page.html", user=current_user, products = products)
