@@ -174,7 +174,7 @@ def admin_summary():
     plt.ylabel("No. of Products")
     plt.title("Category_wise product distribution")
     plt.tight_layout()
-    plt.savefig("D:\GroceryStore\webapp\static\Images\graph.png")
+    plt.savefig("webapp\static\Images\graph.png")
     return render_template("admin_summary.html")
 
 @views.route("/")
