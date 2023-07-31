@@ -38,16 +38,32 @@
                                             <label for="Availability">Availability</label>
                                         </div>
                                         <div class="form-floating mb-3">
-                                            <input type="number" class="form-control" id="Quantity" name="Quantity" min="1" max="{{ product['quantity'] }}">
+                                            <input type="number" class="form-control" id="{{ product['pid'] }}Quantity" name="Quantity" min="1" max="{{ product['quantity'] }}" oninput="calculateTotal()">
                                             <label for="Quantity">Quantity</label>
                                         </div>
                                         <div class="form-floating mb-3">
-                                            <input type="number" class="form-control" value="{{ product['rateperunit'] }}" id="Price" readonly>
+                                            <input type="number" class="form-control" value="{{ product['rateperunit'] }}" id="{{ product['pid'] }}Price" readonly>
                                             <label for="Price">Price</label>
                                         </div>
                                         <div class="form-floating mb-3">
-                                            <input type="number" name="Total" class="form-control" value="document.getElementById('Quantity')*{{ product['rateperunit'] }}" id="Total" readonly>
+                                            <input type="number" name="Total" class="form-control" value="document.getElementById('Quantity')*{{ product['rateperunit'] }}" id="{{ product['pid'] }}Total" readonly>
                                             <label for="Total">Total</label>
+                                            <script>
+                                                function calculateTotal() {
+                                                    // Get the quantity and price values from the form
+                                                    const quantity = parseInt(document.getElementById('{{ product["pid"] }}Quantity').value);
+                                                    const price = parseInt(document.getElementById('{{ product["pid"] }}Price').value);
+                                        
+                                                    // Calculate the total price
+                                                    const totalPrice = quantity * price;
+                                        
+                                                    // Update the total price field in the form
+                                                    document.getElementById('{{ product["pid"] }}Total').value = totalPrice;
+                                                }
+                                        
+                                                // Calculate total initially on page load
+                                                calculateTotal();
+                                            </script>
                                         </div>
                                     </div>
                                     <div class="modal-footer">

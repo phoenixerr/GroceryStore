@@ -6,6 +6,9 @@ from .models import User, Category, Product, Booking, Order
 from datetime import datetime
 from sqlalchemy import exc
 from flask_login import AnonymousUserMixin, LoginManager
+import matplotlib.pyplot as plt
+from matplotlib.ticker import MaxNLocator
+
 
 
 views = Blueprint("views", __name__)
@@ -151,6 +154,29 @@ def delete_product(product_id):
 @admin_required
 @login_required
 def admin_summary():
+    dict = {}
+        
+    cat_list = Category.query.distinct(Category.cname).all()
+    # print(showlist)
+
+    for cat in cat_list:
+        products = Product.query.filter_by(category_id=cat.cid)
+        count = products.count()
+        dict.update({cat.cname : count})
+    
+    categories = list(dict.keys())
+    product_count = list(dict.values())
+    fig = plt.figure(figsize = (10, 5)).gca()
+    fig.yaxis.set_major_locator(MaxNLocator(integer=True))
+
+    # creating the bar plot
+    plt.bar(categories, product_count, color ='green', width = 0.4)
+    plt.xlabel("Categories")
+    plt.ylabel("No. of Products")
+    plt.title("Category_wise product distribution")
+    plt.tight_layout()
+    plt.savefig("D:\GroceryStore\webapp\static\Images\graph.png")
+    #plt.show()
     return render_template("admin_summary.html")
 
 @views.route("/")
@@ -161,7 +187,7 @@ def user_dashboard():
     products = Product.query.all()
     return render_template("user_dashboard.html", user=current_user, categories = categories, products = products)
 
-@views.route("/create/bookings/<int:category_id>/<int:product_id>")
+@views.route("/create/bookings/<int:category_id>/<int:product_id>", methods=['POST'])
 @user_required
 @login_required
 def create_booking(category_id, product_id):
@@ -178,7 +204,7 @@ def create_booking(category_id, product_id):
         flash("Requested quantity not available. Sorry for inconvenience!", category='error')
     return redirect(url_for("views.user_dashboard"))
 
-@views.route("/edit/bookings/<int:booking_id>")
+@views.route("/edit/bookings/<int:booking_id>", methods=['POST'])
 @user_required
 @login_required
 def edit_booking(booking_id):
@@ -244,16 +270,16 @@ def buy_all():
 @user_required
 @login_required
 def user_bookings():
-    bookings = Booking.query.filter_by(current_user.id).all()
+    bookings = Booking.query.filter_by(user_id=current_user.id).all()
     total = 0
     for booking in bookings:
         product = Product.query.get(booking.product_id)
         quantity = booking.quantity_of_item
         new_quantity = product.quantity - int(quantity)
         if new_quantity>=0:
-            total = total + booking.total_price
+            total = total + int(booking.total_price)
 
-    return render_template("user_bookings", bookings=bookings, total=total)
+    return render_template("user_bookings.html", bookings=bookings, total=total)
 
 @views.route("/user_orders")
 @user_required
