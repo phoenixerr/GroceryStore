@@ -110,14 +110,14 @@
                                             <script>
                                                 function calculateTotal() {
                                                     // Get the quantity and price values from the form
-                                                    const quantity = parseInt(document.getElementById('{{ product["pid"] }}Quantity').value);
-                                                    const price = parseInt(document.getElementById('{{ product["pid"] }}Price').value);
+                                                    const quantity = parseInt(document.getElementById('Quantity').value);
+                                                    const price = parseInt(document.getElementById('Price').value);
                                         
                                                     // Calculate the total price
                                                     const totalPrice = quantity * price;
                                         
                                                     // Update the total price field in the form
-                                                    document.getElementById('{{ product["pid"] }}Total').value = totalPrice;
+                                                    document.getElementById('Total').value = totalPrice;
                                                 }
                                         
                                                 // Calculate total initially on page load
