@@ -277,7 +277,7 @@ def user_bookings():
         quantity = booking.quantity_of_item
         new_quantity = product.quantity - int(quantity)
         if new_quantity>=0:
-            total = total + int(booking.total_price)
+            pass #total = total + int(booking.total_price)
 
     return render_template("user_bookings.html", bookings=bookings, total=total)
 

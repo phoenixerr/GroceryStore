@@ -1,11 +1,15 @@
 {% extends "user_base.html" %}
 {% block body %}
 
-<div class="row">
+<div class="container mb-4">
+    <div class="text-center my-4" >
+        <h3>Your Cart</h3>
+    </div>
     <!-- loop for products in specific category -->
     {% for booking in bookings %}
+    <div class="row">
     <div class="col">
-        <div class="card h-100">
+        <div class="card">
         <div class="card-body">
             <div class="row">
                 <div class="col-3">
@@ -63,7 +67,9 @@
                 </div>
             </div>
         </div>
+        </div>
         {% endfor %}
+        
 
 {% endblock body %}
 
@@ -79,3 +85,4 @@
         </div>
     </div>
 </footer>
+</div>
