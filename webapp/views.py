@@ -157,7 +157,6 @@ def admin_summary():
     dict = {}
         
     cat_list = Category.query.distinct(Category.cname).all()
-    # print(showlist)
 
     for cat in cat_list:
         products = Product.query.filter_by(category_id=cat.cid)
@@ -176,7 +175,6 @@ def admin_summary():
     plt.title("Category_wise product distribution")
     plt.tight_layout()
     plt.savefig("D:\GroceryStore\webapp\static\Images\graph.png")
-    #plt.show()
     return render_template("admin_summary.html")
 
 @views.route("/")
