@@ -97,32 +97,17 @@
                                             <label for="Availability">Availability</label>
                                         </div>
                                         <div class="form-floating mb-3">
-                                            <input type="number" class="form-control" id="Quantity" name="Quantity" min="1" max="{{ product['quantity'] }}" oninput="calculateTotal()">
+                                            <input type="number" class="form-control" id="Quantity{{ product['pid'] }}" name="Quantity" min="1" max="{{ product['quantity'] }}" oninput="return calculateTotal{{ product['pid'] }}();">
                                             <label for="Quantity">Quantity</label>
                                         </div>
                                         <div class="form-floating mb-3">
-                                            <input type="number" class="form-control" value="{{ product['rateperunit'] }}" id="Price" readonly>
+                                            <input type="number" class="form-control" value="{{ product['rateperunit'] }}" id="Price{{ product['pid'] }}" readonly>
                                             <label for="Price">Price</label>
                                         </div>
                                         <div class="form-floating mb-3">
-                                            <input type="number" name="Total" class="form-control" value="document.getElementById('Quantity')*{{ product['rateperunit'] }}" id="Total" readonly>
+                                            <input type="number" name="Total" class="form-control" value="" id="Total{{ product['pid'] }}" readonly >
                                             <label for="Total">Total</label>
-                                            <script>
-                                                function calculateTotal() {
-                                                    // Get the quantity and price values from the form
-                                                    const quantity = parseInt(document.getElementById('Quantity').value);
-                                                    const price = parseInt(document.getElementById('Price').value);
-                                        
-                                                    // Calculate the total price
-                                                    const totalPrice = quantity * price;
-                                        
-                                                    // Update the total price field in the form
-                                                    document.getElementById('Total').value = totalPrice;
-                                                }
-                                        
-                                                // Calculate total initially on page load
-                                                calculateTotal();
-                                            </script>
+                                            
                                         </div>
                                     </div>
                                     <div class="modal-footer">
@@ -138,10 +123,26 @@
                     {% endif %}
                 </div>                
                 </div>
-            </div>            
+            </div>   
+            <script>
+                
+                function calculateTotal{{ product['pid'] }}() {
+                    // Get the quantity and price values from the form
+                    var quantity = document.getElementById('Quantity{{ product['pid'] }}').value;
+                    var price = document.getElementById('Price{{ product['pid'] }}').value;
+                
+                    // Calculate the total price
+                    var totalPrice = quantity * price;
+                    
+                    // Update the total price field in the form
+                    return document.getElementById('Total{{ product['pid'] }}').value = totalPrice;
+                }
+                
+            </script>         
             {% endfor %}
         </div>
     </div>
+    
     {% endfor %}
 
     
@@ -154,30 +155,5 @@
 
 {% endblock body %}
 
-<script>
 
-let modal = document.getElementById("{{ product['pid'] }}AddToCartModal");
-  let i;
-  let j;
-  let k;
-
-  // Get image
-  let img = document.getElementsByClassName("myImg");
-  let myName = document.getElementsByClassName("myName");
-  let myDesc = document.getElementsByClassName("myDesc");
-  let modalImg = document.getElementById("showImg");
-  let modalName = document.getElementById("imgName");
-  let modalDesc = document.getElementById("imgDesc");
-
-  // Loop through images
-  for (i = 0; i < img.length; i++) {
-    img[i].onclick = function () {
-      modal.style.display = "block";
-      modalImg.src = this.src;
-      modalName.innerHTML = this.parentElement.getElementsByClassName('myName')[0].innerHTML;
-      modalDesc.innerHTML = this.parentElement.getElementsByClassName('myDesc')[0].innerHTML;
-    }
-  }
-
-</script>
     
