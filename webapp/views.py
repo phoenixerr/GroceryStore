@@ -237,11 +237,14 @@ def buy(booking_id):
     product = Product.query.get(booking.product_id)
     quantity = booking.quantity_of_item
     new_quantity = product.quantity - int(quantity)
-    product.quantity = new_quantity
-    order = Order(userid=current_user.id, categoryid=category.cid, productid=product.pid, categoryname=category.cname, quantity_of_product=quantity, product_name=product.pname)
-    db.session.add(order)
-    db.session.delete(booking)
-    db.session.commit()
+    if new_quantity>=0:
+        product.quantity = new_quantity
+        order = Order(userid=current_user.id, categoryid=category.cid, productid=product.pid, categoryname=category.cname, quantity_of_product=quantity, product_name=product.pname)
+        db.session.add(order)
+        db.session.delete(booking)
+        db.session.commit()
+    else:
+        flash('Requested quantity of product unavailable!')
     return redirect(url_for("views.user_dashboard"))
 
 
